@@ -1,6 +1,6 @@
 clear all;
 close all;
-ipath = 'M:\new molecule validation\20180513 single color CB1 gnb1 ncam1\msDIV21 CB1-647\axon_regions\';
+ipath = '\axon_regions\';
 pixelSize = 167; 
 dbin = 10/1000;  % micr
 bb=0;
@@ -15,7 +15,7 @@ nameFolds(ismember(nameFolds,{'..'})) = [];
 aamplitude=[];
 per=[];
 localization_count=[];
-for jj=1%:length(nameFolds)
+for jj=1:length(nameFolds)
 filename = dir(fullfile(strcat([ipath nameFolds{jj,1} '\'],'*storm*.bin')));
 
 for ii=[1:length(filename)]
@@ -68,22 +68,35 @@ for ii=[1:length(filename)]
   y2 = 0.9;
   txt2 = ['amplitude=' num2str(-(c(11)+c(30))/2+c(20))];
   text(x2,y2,txt2)
+  %%%%% distance between adjacent rings %%%%
   gf = fit(xxx(10:end)',c(10:end),'gauss3');
   per(ii)=gf.b1; 
+
   xlabel('Lag (nm)','FontSize', 25)
   ylabel('Autocorrelation','FontSize', 25);
   set(gca,'XTick',0:200:900);
   set(gca,'YTick',-0.5:0.5:1);
   xlim([0 900])
   set(gca,'FontSize',20)
-  if -(c(11)+c(30))/2+c(20)<-10.07
-      continue;
-  end
   average_c=[average_c,c];
+  
+  %%% diameter calculation. 
+  ycdata = MList.yc; %pixel -> nm
+  y = (ycdata-min(ycdata))*pixelSize/1000;    % micron ' dual objective 141 '148
+  bin=min(y):dbin:max(y);
+  L=size(bin,2);
+  ny=hist(y,bin);
+  threshold=0.005*sum(ny);
+  consecutive_index=find(ny>threshold);
+  consecutive_index=[0,consecutive_index,consecutive_index(end)+2];
+    diameter(ii)=(max(diff(find(diff(consecutive_index)~=1)))-1)*dbin;
+    aamplitude(ii)=-(c(11)+c(30))/2+c(20);
+%   fprintf(fileID,'%10s\t%20s\t%4.2f\t%4.2f\t%4.2f\r\n',nameFolds{jj,1},filename(ii).name,-(c(11)+c(30))/2+c(20),diameter(ii), max(x));
+%   
   
 end
 end
-aamplitude(aamplitude==0)=[];
+  aamplitude(aamplitude==0)=[];
   mean(localization_count)
   figure;
   h=hist(aamplitude,-0.2:0.2:0.2);
