@@ -11,7 +11,7 @@ The MATLAB codes for the 1D autocorrelation and cross-correlation analyses of th
 `./conventional microscopy analysis/axon_dendrite_bundling.m`:  it calculates the fraction of dendrite length adhered to axons.
 `./conventional microscopy analysis/colocalize_synapse.m`:  it calculates the average synapse density. 
 `./conventional microscopy analysis/axon_intensity.m`: it calculates the average fluorescence intensity along axons (for the quantifications of knockdown efficiencies of various molecules and the average surface expression levels of the cell adhesion molecules).
-`./conventional microscopy analysis/Dendrite_diameter_vs_distance.m`: it calculates the average diameter of dendrites versus the distance from soma. 
+`./conventional microscopy analysis/dendrite_diameter_vs_distance.m`: it calculates the average diameter of dendrites versus the distance from soma. 
 
 ### Data IO and other utilities
 `./data_IO/`: contains the MATLAB codes used for converting between different file formats for image processing (`./data_IO /bin2mat.m and ./data_IO /convert_molecule_list_txt2bin.m`), STORM visualization (`./data_IO/bin2png_2c.m` and `./data_IO /bin2png.m`), molecules list writer (`./data_IO/CreateDefaultParameters.m` and `./data_IO/CreateMoleculeList.m`) and neurite tracing across several fields of view (`./data_IO/mosaic_to_matlab.py`). We note that this directory is used to perform tasks such as image processing or format conversion. 
